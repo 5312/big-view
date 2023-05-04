@@ -1,68 +1,63 @@
-<div align="center"> <a href="https://github.com/kailong321200875/vue-element-plus-admin"> <img width="100" src="./public/logo.png"> </a> <br> <br>
 
-[![license](https://img.shields.io/github/license/kailong321200875/vue-element-plus-admin.svg)](LICENSE)
 
-<h1>vue-element-plus-admin</h1>
+
+<h1>韩城龙门镇智慧监管信息平台</h1>
 </div>
 
-**English** | [中文](./README.zh-CN.md)
 
-## Introduction
+## 介绍
 
-vue-element-plus-admin is a free and open source middle and background template based on `element-plus`. Developed using the latest mainstream technologies such as `vue3`, `vite4` and `typescript`, the out of the box middle and background front-end solution can be used as the starting template of the project and learning reference. And always pay attention to the latest technological trends and update them as soon as possible.
+韩城龙门镇智慧监管信息平台是一个基于 `element-plus` 免费开源的中后台模版。使用了最新的`vue3`，`vite4`，`TypeScript`等主流技术开发，开箱即用的中后台前端解决方案，可以用来作为项目的启动模版，也可用于学习参考。并且时刻关注着最新技术动向，尽可能的第一时间更新。
 
-vue-element-plus-admin is positioned as a background integration scheme, which is not suitable for secondary development as a basic template. Because it integrates many functions that you may not use, it will cause a lot of code redundancy. If your project doesn't pay attention to this problem, you can also directly carry out secondary development based on it.
 
-If you need a basic template, please switch to the `tempalte` branch. `Tempalte` simply integrates some common layout functions such as layout and dynamic menu, which is more suitable for developers to carry out secondary development.
+## 特性
 
-## Feature
+- **最新技术栈**：使用 Vue3/vite4 等前端前沿技术开发
+- **TypeScript**: 应用程序级 JavaScript 的语言
+- **主题**: 可配置的主题
+- **国际化**：内置完善的国际化方案
+- **自定义数据** 内置 Mock 数据方案
+- **权限** 内置完善的动态路由权限生成方案
+- **组件** 二次封装了多个常用的组件
+- **示例** 内置丰富的示例
 
-- **State of The Art Development**：Use front-end front-end technology development such as Vue3/vite4
-- **TypeScript**: Application-level JavaScript language
-- **Theming**: Configurable themes
-- **International**：Built-in complete internationalization program
-- **Mock Server** Built-in mock data scheme
-- **Authority** Built-in complete dynamic routing permission generation scheme.
-- **Component** Multiple commonly used components are encapsulated twice
-- **Examples** Built-in rich examples
+## 预览
 
-## Preview
+- [vue-element-plus-admin](https://element-plus-admin.cn/) - 完整版 github 站点
+- [vue-element-plus-admin](https://kailong110120130.gitee.io/vue-element-plus-admin) - 完整版 gitee 站点
 
-- [vue-element-plus-admin](https://element-plus-admin.cn/) - Full version of the github site
-- [vue-element-plus-admin](https://kailong110120130.gitee.io/vue-element-plus-admin) - Full version of the gitee site
+帐号：**admin/admin test/test**
 
-account: **admin/admin test/test**
+`admin` 帐号用于模拟服务端控制权限，服务端返回什么就渲染什么
 
-`admin` account is used to simulate the control permission of the server, and render whatever the server returns
+`test` 帐号用于模拟前端控制权限，服务端只返回需要显示的菜单 key，前端进行匹配渲染
 
-`test` account is used to simulate the front-end control authority. The server only returns the menu key to be displayed, and the front-end performs matching rendering
+## 文档
 
-## Documentation
+[文档地址 Github](https://element-plus-admin-doc.cn/)
 
-[Document Github](https://element-plus-admin-doc.cn/)
+[文档地址 Gitee](https://kailong110120130.gitee.io/vue-element-plus-admin-doc)
 
-[Document Gitee](https://kailong110120130.gitee.io/vue-element-plus-admin-doc)
+## 前序准备
 
-## Preparation
+- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) - 项目开发环境
+- [Vite4](https://vitejs.dev/) - 熟悉 vite 特性
+- [Vue3](https://v3.vuejs.org/) - 熟悉 Vue 基础语法
+- [TypeScript](https://www.typescriptlang.org/) - 熟悉 `TypeScript` 基本语法
+- [Es6+](http://es6.ruanyifeng.com/) - 熟悉 es6 基本语法
+- [Vue-Router-Next](https://next.router.vuejs.org/) - 熟悉 vue-router 基本使用
+- [Element-Plus](https://element-plus.org/) - element-plus 基本使用
+- [Mock.js](https://github.com/nuysoft/Mock) - mockjs 基本语法
 
-- [node](http://nodejs.org/) and [git](https://git-scm.com/) - Project development environment
-- [Vite4](https://vitejs.dev/) - Familiar with vite features
-- [Vue3](https://v3.vuejs.org/) - Familiar with Vue basic syntax
-- [TypeScript](https://www.typescriptlang.org/) - Familiar with the basic syntax of `TypeScript`
-- [Es6+](http://es6.ruanyifeng.com/) - Familiar with es6 basic syntax
-- [Vue-Router-Next](https://next.router.vuejs.org/) - Familiar with the basic use of vue-router
-- [Element-Plus](https://element-plus.org/) - Familiar with the basic use of element-plus
-- [Mock.js](https://github.com/nuysoft/Mock) - mockjs basic syntax
+## 安装和使用
 
-## Install and use
-
-- Get the project code
+- 获取代码
 
 ```bash
 git clone https://github.com/kailong321200875/vue-element-plus-admin.git
 ```
 
-- Installation dependencies
+- 安装依赖
 
 ```bash
 cd vue-element-plus-admin
@@ -71,62 +66,62 @@ pnpm install
 
 ```
 
-- run
+- 运行
 
 ```bash
 pnpm run dev
 ```
 
-- build
+- 打包
 
 ```bash
 pnpm run build:pro
 ```
 
-## Change Log
+## 更新日志
 
-[CHANGELOG](./CHANGELOG.md)
+[更新日志](./CHANGELOG.md)
 
-## How to contribute
+## 如何贡献
 
-You can [Raise an issue](https://github.com/kailong321200875/vue-element-plus-admin/issues/new) Or submit a Pull Request.
+你可以[提一个 issue](https://github.com/kailong321200875/vue-element-plus-admin/issues/new) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
-1. Fork code
-2. Create your own branch: `git checkout -b feat/xxxx`
-3. Submit your changes: `git commit -am 'feat(function): add xxxxx'`
-4. Push your branch: `git push origin feat/xxxx`
-5. submit `pull request`
+1. Fork 代码
+2. 创建自己的分支: `git checkout -b feat/xxxx`
+3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
+4. 推送您的分支: `git push origin feat/xxxx`
+5. 提交 `pull request`
 
-## Git Contribution submission specification
+## Git 贡献提交规范
 
-- `feat` New features
-- `fix` Fix bugs
-- `docs` document
-- `style` Format and style (changes that do not affect code operation)
-- `refactor` Refactor
-- `perf` Optimize related, such as improving performance and experience
-- `test` Add test
-- `build` Compilation related modifications, changes to project construction or dependencies
-- `ci` Continuous integration modification
-- `chore` Changes in the construction process or auxiliary tools
-- `revert` Rollback to previous version
-- `workflow` Workflow improvement
-- `mod` Uncertain modification classification
-- `wip` Under development
-- `types` type
+- `feat` 新功能
+- `fix` 修补 bug
+- `docs` 文档
+- `style` 格式、样式(不影响代码运行的变动)
+- `refactor` 重构(即不是新增功能，也不是修改 BUG 的代码)
+- `perf` 优化相关，比如提升性能、体验
+- `test` 添加测试
+- `build` 编译相关的修改，对项目构建或者依赖的改动
+- `ci` 持续集成修改
+- `chore` 构建过程或辅助工具的变动
+- `revert` 回滚到上一个版本
+- `workflow` 工作流改进
+- `mod` 不确定分类的修改
+- `wip` 开发中
+- `types` 类型
 
-## Browser support
+## 浏览器支持
 
-The `Chrome 80+` browser is recommended for local development
+本地开发推荐使用 `Chrome 80+` 浏览器
 
-Support modern browsers, not IE
+支持现代浏览器, 不支持 IE
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
 | :-: | :-: | :-: | :-: | :-: |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
-## License
+## 许可证
 
 [MIT](./LICENSE)
