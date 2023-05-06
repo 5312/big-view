@@ -6,7 +6,8 @@ import {
   PieChart,
   MapChart,
   PictorialBarChart,
-  RadarChart
+  RadarChart,
+  GaugeChart
 } from 'echarts/charts'
 
 import {
@@ -35,7 +36,8 @@ echarts.use([
   MapChart,
   CanvasRenderer,
   PictorialBarChart,
-  RadarChart
+  RadarChart,
+  GaugeChart
 ])
 
 export default echarts

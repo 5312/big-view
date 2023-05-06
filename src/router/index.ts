@@ -10,7 +10,8 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard/analysis',
+    redirect: '/bighome',
+    // redirect: '/dashboard/analysis',
     name: 'Root',
     meta: {
       hidden: true
@@ -54,8 +55,19 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
     }
   }
 ]
-
 export const asyncRouterMap: AppRouteRecordRaw[] = [
+  {
+    path: '/bighome',
+    name: 'Bighome',
+    component: () => import('@/views/Bighome/Bighome.vue'),
+    meta: {
+      title: t('router.dashboard')
+    }
+  }
+]
+
+// 隐藏废弃
+export const asyncRouterMaps: AppRouteRecordRaw[] = [
   {
     path: '/dashboard',
     component: Layout,

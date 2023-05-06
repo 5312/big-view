@@ -3,6 +3,8 @@ import type { EChartsOption } from 'echarts'
 import echarts from '@/plugins/echarts'
 import { debounce } from 'lodash-es'
 import 'echarts-wordcloud'
+import 'echarts-liquidfill'
+
 import { propTypes } from '@/utils/propTypes'
 import { computed, PropType, ref, unref, watch, onMounted, onBeforeUnmount, onActivated } from 'vue'
 import { useAppStore } from '@/store/modules/app'
