@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, nextTick, onMounted } from 'vue'
+import { Ref, ref, unref, nextTick, onMounted } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
 import { Echart } from '@/components/Echart'
 import { EChartsOption } from 'echarts'
@@ -58,49 +58,64 @@ nextTick(() => {
 })
 const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
 
-glbload.load(
-  'longmenzhen01.glb',
-  function (loadedModel) {
-    scene.value.add(loadedModel.scene)
-    // 默认视角
-    camera.value.position.set(0, 10000, 0) // 相机位置
+onMounted(() => {
+  let scenes = unref(scene)
 
-    addPoint({ x: -2000, y: 32, z: 16 }, 1000, 0xf09393, './cube/alarm1.png')
-    addPoint({ x: 2000, y: 132, z: 116 }, 500, 0xf09393, './cube/alarm1.png')
-    addPoint({ x: 2000, y: 132, z: 2000 }, 500, 0xffff00, './cube/alarm2.png')
+  glbload.load(
+    'longmenzhen01.glb',
+    function (loadedModel) {
+      scenes.add(loadedModel.scene)
+      // 默认视角
+      camera.value.position.set(0, 10000, 0) // 相机位置
 
-    const map = new THREE.TextureLoader().load('./cube/Camera.png')
-    const material = new THREE.SpriteMaterial({ map: map })
-    const sprite = new THREE.Sprite(material)
-    sprite.scale.set(80, 80, 80)
-    sprite.position.set(-1500, 32, 1200)
-    scene.value.add(sprite)
+      addPoint(scenes, { x: -2000, y: 32, z: 16 }, 1300, 0xf09393, './cube/alarm1.png')
 
-    const s1 = sprite.clone()
-    s1.position.set(-4000, 32, 1000)
-    scene.value.add(s1)
-    const s2 = sprite.clone()
-    s2.position.set(1000, 32, 1000)
-    scene.value.add(s2)
-  },
-  function (xhr) {
-    console.log(parseInt(((xhr.loaded / xhr.total) * 100).toFixed(0)))
-  },
-  function (err) {
-    console.log(err)
-  }
-)
+      let qipao = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: new THREE.TextureLoader().load('./cube/markbig.png')
+          // color: 0xf09393
+        })
+      )
+      qipao.scale.set(520, 400, 400)
+      qipao.position.set(-1600, -100, -150)
+      scenes.add(qipao)
+
+      addPoint(scenes, { x: 2000, y: 132, z: 116 }, 500, 0xf09393, './cube/alarm1.png')
+      addPoint(scenes, { x: 2000, y: 132, z: 2000 }, 500, 0xffff00, './cube/alarm2.png')
+
+      const map = new THREE.TextureLoader().load('./cube/Camera.png')
+      const material = new THREE.SpriteMaterial({ map: map })
+      const sprite = new THREE.Sprite(material)
+      sprite.scale.set(80, 80, 80)
+      sprite.position.set(-1500, 32, 1200)
+      scenes.add(sprite)
+
+      const s1 = sprite.clone()
+      s1.position.set(-4000, 32, 1000)
+      scenes.add(s1)
+      const s2 = sprite.clone()
+      s2.position.set(1000, 32, 1000)
+      scenes.add(s2)
+    },
+    function (xhr) {
+      console.log(parseInt(((xhr.loaded / xhr.total) * 100).toFixed(0)))
+    },
+    function (err) {
+      console.log(err)
+    }
+  )
+})
 
 /* 发光点 */
-function addPoint({ x, y, z }, radius, color, url) {
-  let geometry = new THREE.SphereGeometry(5, 32, 16)
+function addPoint(s: THREE.Scene, { x, y, z }, radius: number, color: number, url: string) {
+  let geometry = new THREE.SphereGeometry(10, 32, 16)
   let material = new THREE.MeshBasicMaterial({
     color: 0xffffff,
     opacity: 1
   })
   let mesh = new THREE.Mesh(geometry, material)
   mesh.position.set(x, y, z)
-  scene.value.add(mesh)
+  s.add(mesh)
   let textureLoader1 = new THREE.TextureLoader()
   // 加载贴图
   let texture = textureLoader1.load(url)

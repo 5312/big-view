@@ -98,10 +98,10 @@ export class ThreeInit {
 
     controls.screenSpacePanning = false
 
-    // controls.minDistance = 100
-    // controls.maxDistance = 500
+    controls.minDistance = 100
+    controls.maxDistance = 10000
 
-    controls.maxPolarAngle = Math.PI / 2 // - Math.PI / 16
+    controls.maxPolarAngle = 0 // Math.PI / 2 // - Math.PI / 16
 
     this.controls = controls
   }
