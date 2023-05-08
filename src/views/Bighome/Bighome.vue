@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, nextTick } from 'vue'
+import { Ref, ref, nextTick, onMounted } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
 import { Echart } from '@/components/Echart'
 import { EChartsOption } from 'echarts'
@@ -7,7 +7,8 @@ import * as THREE from 'three'
 import { use3D } from '@/three/use3D'
 import { liquidFill1, liquidFill2, liquidFill3 } from './liquidFillOptions'
 import moment from 'moment'
-
+import videojs from 'video.js/dist/video.min'
+import 'video.js/dist/video-js.min.css'
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('big')
@@ -42,52 +43,136 @@ nextTick(() => {
   script.src = 'https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0'
   document.getElementsByTagName('head')[0].appendChild(script)
 })
-/*  */
-const realTime = ref<Date>()
 /* 查询时间 */
+const realTime = ref<Date>()
+const dialogVisible = ref(false)
 const update = () => {
   realTime.value = new Date()
   requestAnimationFrame(update)
 }
 requestAnimationFrame(update)
-
+/* end */
 const key = ref(Math.random())
 nextTick(() => {
   key.value = Math.random()
 })
-const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
 
-glbload.load(
-  'longmenzhen01.glb',
-  function (loadedModel) {
-    scene.value.add(loadedModel.scene)
-    // 默认视角
-    camera.value.position.set(0, 10000, 0) // 相机位置
+onMounted(() => {
+  const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
 
-    let geometry = new THREE.SphereGeometry(30, 32, 16)
-    let material = new THREE.MeshLambertMaterial({ color: 0xffff00 })
-    let mesh = new THREE.Mesh(geometry, material)
-    scene.value.add(mesh)
-    let textureLoader = new THREE.TextureLoader()
-    // 加载贴图
-    let texture = textureLoader.load('./cube/alarm1.png')
-    let spriteMaterial = new THREE.SpriteMaterial({
-      map: texture,
-      color: 0xffff00,
-      blending: THREE.AdditiveBlending //
-    })
-    let sprite = new THREE.Sprite(spriteMaterial)
-    sprite.scale.set(1000, 1000, 10.0)
-    mesh.add(sprite)
-  },
-  function (xhr) {
-    console.log(parseInt(((xhr.loaded / xhr.total) * 100).toFixed(0)))
-  },
-  function (err) {
-    console.log(err)
-  }
-)
+  glbload.load(
+    'longmenzhen01.glb',
+    function (loadedModel) {
+      scene.add(loadedModel.scene)
+      // 默认视角
+      camera.value.position.set(0, 10000, 0) // 相机位置
 
+      addPoint(scene, { x: -2700, y: 332, z: -1700 }, 1000, 0xf09393, './cube/alarm1.png')
+      addPoint(scene, { x: 2000, y: 132, z: 116 }, 500, 0xf09393, './cube/alarm1.png')
+      addPoint(scene, { x: 2000, y: 132, z: 2000 }, 500, 0xffff00, './cube/alarm2.png')
+      // addPoint({ x: -2700, y: 332, z: -1800 }, 300, 0xffff00, './cube/qipao.png')
+
+      const map = new THREE.TextureLoader().load('./cube/Camera.png')
+      const qipao = new THREE.TextureLoader().load('./cube/qipao.png')
+      const material = new THREE.SpriteMaterial({ map: map })
+      const qipaomine = new THREE.SpriteMaterial({ map: qipao })
+
+      const qipaosprite = new THREE.Sprite(qipaomine)
+      qipaosprite.scale.set(520, 400, 400)
+      qipaosprite.position.set(-2300, 332, -2000)
+      scene.add(qipaosprite)
+
+      const sprite = new THREE.Sprite(material)
+      sprite.scale.set(80, 80, 80)
+      sprite.position.set(-1500, 32, 1200)
+      scene.add(sprite)
+
+      const s1 = sprite.clone()
+      s1.position.set(-4000, 32, 1430)
+      scene.add(s1)
+      const s2 = sprite.clone()
+      s2.position.set(1200, 32, 1130)
+      scene.add(s2)
+      const s3 = sprite.clone()
+      s3.position.set(400, 32, 0)
+      scene.add(s3)
+      const s4 = sprite.clone()
+      s4.position.set(3600, 32, 3000)
+      scene.add(s4)
+
+      const s5 = sprite.clone()
+      s5.position.set(5800, 32, 2000)
+      scene.add(s5)
+    },
+    function (xhr) {
+      console.log(parseInt(((xhr.loaded / xhr.total) * 100).toFixed(0)))
+    },
+    function (err) {
+      console.log(err)
+    }
+  )
+})
+
+/* 发光点 */
+function addPoint(scene, { x, y, z }, radius, color, url) {
+  let geometry = new THREE.SphereGeometry(5, 32, 16)
+  let material = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    opacity: 1
+  })
+  let mesh = new THREE.Mesh(geometry, material)
+  mesh.position.set(x, y, z)
+  scene.add(mesh)
+  let textureLoader1 = new THREE.TextureLoader()
+  // 加载贴图
+  let texture = textureLoader1.load(url)
+  let spriteMaterial = new THREE.SpriteMaterial({
+    map: texture,
+    color: color //0xf09393
+  })
+  let sprite = new THREE.Sprite(spriteMaterial)
+  sprite.scale.set(radius, radius, radius)
+  mesh.add(sprite)
+} // 在onMounted阶段进行初始化
+
+onMounted(() => {
+  initVideoSourc()
+  initVideoSourc1()
+})
+
+function initVideoSourc() {
+  videojs(
+    'my-video',
+    {
+      bigPlayButton: false,
+      textTrackDisplay: false,
+      posterImage: false,
+      errorDisplay: false,
+      controlBar: true // ...其他配置参数
+    },
+    function (this: any) {
+      this.play()
+    }
+  )
+}
+function initVideoSourc1() {
+  videojs(
+    'my-video1',
+    {
+      bigPlayButton: false,
+      textTrackDisplay: false,
+      posterImage: false,
+      errorDisplay: false,
+      controlBar: true // ...其他配置参数
+    },
+    function (this: any) {
+      this.play()
+    }
+  )
+}
+const dialog = function () {
+  dialogVisible.value = true
+}
 const pieOptions: EChartsOption = {
   tooltip: {
     trigger: 'item'
@@ -130,23 +215,59 @@ const pieOptions: EChartsOption = {
   ]
 }
 const lineOptions: EChartsOption = {
+  title: {
+    subtext: '次数',
+    left: '10%'
+  },
   grid: {
-    top: '10%',
+    top: '18%',
     left: '14%',
     bottom: '10%'
   },
-  xAxis: {
-    type: 'category',
-    boundaryGap: false
-  },
+  xAxis: [
+    {
+      type: 'category',
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      axisLine: {
+        show: true
+      },
+      interval: 0,
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: '#78777799'
+        }
+      }
+    }
+  ],
   yAxis: {
-    type: 'value'
+    type: 'value',
+    max: 500,
+    axisLine: {
+      show: true
+    },
+    splitLine: {
+      show: false
+    }
   },
   series: [
     {
-      data: [820, 932, 901, 934, 290, 130, 120],
+      data: [208, 247, 283, 272, 317, 269, 209, 241, 309, 295, 188, 212],
       type: 'line',
-      areaStyle: {}
+      areaStyle: { color: '#49dce46e' },
+      smooth: true,
+      symbolSize: 8,
+      label: {
+        show: true,
+        color: '#fff',
+        position: 'top'
+      },
+      lineStyle: {
+        color: '#49dce4'
+      },
+      emphasis: {
+        focus: 'series'
+      }
     }
   ]
 }
@@ -266,11 +387,11 @@ const water: any = {
       :class="`${prefixCls}__header  w-full z-10  absolute top-0 h-17 px-4 items-center flex flex-row justify-between`"
     >
       <div class="fonts text-2xl">
-        <div style="width: 200px">{{
-          moment(realTime).format('YYYY MM DD  &nbsp;  HH:mm:ss')
+        <div style="position: absolute; top: 5px; right: 100px; width: 200px">{{
+          moment(realTime).format('HH:mm:ss')
         }}</div>
       </div>
-      <div class="text-2xl">
+      <div class="text-2xl" style="position: absolute; top: 0; right: 20px; width: 200px">
         <div id="he-plugin-simple"></div>
       </div>
     </div>
@@ -278,7 +399,7 @@ const water: any = {
     <!--  -->
     <div class="position-card h-34 left-10 top-30">
       <div class="title-left h-8 mb-2 leading-8 pl-2 font-bold">报警累计</div>
-      <div class="bodys h-28 px-4">
+      <div class="bodys h-28 px-4" style="padding: 5px; background-color: #0000006b">
         <div class="center center-1 h-full flex felx-row justify-between text-center">
           <div class="flex-block w-1/3">
             <div>报警烟火</div>
@@ -338,11 +459,35 @@ const water: any = {
     </div>
     <!--  -->
     <!--  -->
-    <div class="position-card right-10 top-30">
+    <div class="position-card right-10 top-30" style="z-index: 999">
       <div class="title-right text-right h-8 mb-2 leading-8 pr-2 font-bold">视频监控</div>
-      <div class="bodys h-52 center-bg">
-        <div class="center h-full w-full">
-          <img class="h-full w-full" src="@/assets/imgs/jiankong.png" alt="" />
+      <div class="bodys h-52 center-bg" @click="dialog">
+        <div class="center videocenter h-full w-full flex flex-row">
+          <!-- <img class="h-full w-full" src="@/assets/imgs/jiankong.png" alt="" /> -->
+          <video
+            v-for="(x, y) in [
+              'https://hls01open.ys7.com/openlive/4d4a5ff6f97f4e9cb299bb830140757e.m3u8',
+              '2',
+              '3',
+              '4',
+              '5',
+              '6',
+              '7',
+              '8',
+              '9'
+            ]"
+            :key="y"
+            id="my-video"
+            class="video-js vjs-default-skin w-1/3 h-1/3"
+            autoplay
+            muted
+            preload="auto"
+            width="100%"
+            poster="@/assets/imgs/AlarmCountBg.png"
+          >
+            <!-- // src视频流地址 // type视频类型 -->
+            <source :src="x" style="width: 100%" :key="x" />
+          </video>
         </div>
       </div>
     </div>
@@ -358,13 +503,48 @@ const water: any = {
     <!--  -->
     <div class="position-card right-10 top-155">
       <div class="title-right text-right h-8 mb-2 leading-8 pr-2 font-bold">报警趋势分析</div>
-      <div class="bodys px-4">
+      <div class="bodys">
         <div class="center center-bg h-full">
           <Echart :options="lineOptions" :height="200" />
         </div>
       </div>
     </div>
     <!--  -->
+    <div
+      style="position: absolute; top: 200px; left: 27%; width: 900px; height: 500px"
+      :class="dialogVisible ? 'locktrue' : 'lockfalse'"
+    >
+      <div
+        style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 999;
+          width: 30px;
+          height: 30px;
+          color: red;
+          cursor: pointer;
+        "
+        @click="dialogVisible = false"
+        >X</div
+      >
+      <video
+        id="my-video1"
+        class="video-js vjs-default-skin w-1/3 h-1/3"
+        autoplay
+        muted
+        preload="auto"
+        width="100%"
+        poster="@/assets/imgs/AlarmCountBg.png"
+        style="width: 100%; height: 100%"
+      >
+        <!-- // src视频流地址 // type视频类型 -->
+        <source
+          src="https://hls01open.ys7.com/openlive/4d4a5ff6f97f4e9cb299bb830140757e.m3u8"
+          style="width: 120%"
+        />
+      </video>
+    </div>
   </div>
 </template>
 <style lang="less" scoped>
@@ -391,8 +571,9 @@ const water: any = {
   height: 100%;
 
   &__header {
+    height: 206px;
     color: #fff;
-    background: url('@/assets/imgs/top1920.png') top left / 100% 100% no-repeat;
+    background: url('@/assets/imgs/Top.png') top left / 100% 100% no-repeat;
   }
 
   #canvas {
@@ -419,6 +600,18 @@ const water: any = {
     }
 
     .bodys {
+      .videocenter {
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: space-between;
+        align-items: center;
+
+        video {
+          object-fit: cover;
+          border: 1px solid #000;
+        }
+      }
+
       .center-1 {
         .flex-block {
           font-size: 14px;
@@ -438,7 +631,7 @@ const water: any = {
       }
 
       .center-bg {
-        background-color: #0000001a;
+        background-color: #000000bf;
       }
 
       .center-2 {
@@ -481,6 +674,16 @@ const water: any = {
       }
     }
   }
+}
+
+.locktrue {
+  z-index: 999;
+  opacity: 1;
+}
+
+.lockfalse {
+  z-index: -1;
+  opacity: 0;
 }
 
 .text-my-1 {

@@ -118,8 +118,8 @@ export class ThreeInit {
     /* 环境光 */
 
     //!更贴近自然的户外光照
-    const skyColor = '#0926a6' // '#1981ebcc' //0xb1e1ff // 天空 蓝色
-    const groundColor = '#0926a6' //'#121410' // 0x607a64db // 地面绿色
+    const skyColor = '#1981ebcc' // '#1981ebcc' //0xb1e1ff // 天空 蓝色
+    const groundColor = '#121410' //'#121410' // 0x607a64db // 地面绿色
     const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, 1)
     hemisphereLight.position.set(-250, 150, 0)
     this.scene.add(hemisphereLight)
