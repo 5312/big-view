@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, nextTick, onMounted } from 'vue'
+import { Ref, ref, watch, nextTick, onMounted } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
 import { Echart } from '@/components/Echart'
 import { EChartsOption } from 'echarts'
@@ -9,6 +9,10 @@ import { liquidFill1, liquidFill2, liquidFill3 } from './liquidFillOptions'
 import moment from 'moment'
 import videojs from 'video.js/dist/video.min'
 import 'video.js/dist/video-js.min.css'
+import { Dialog } from '@/components/Dialog'
+import { ElButton } from 'element-plus'
+
+import Video from './components/Video.vue'
 
 const { getPrefixCls } = useDesign()
 
@@ -58,7 +62,14 @@ nextTick(() => {
 })
 
 onMounted(() => {
-  const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
+  const { scene, camera, glbload, spriteObj } = use3D(canvas as Ref<HTMLCanvasElement>)
+  watch(
+    () => spriteObj.value,
+    () => {
+      // console.log(e)
+      dialogVisible.value = true
+    }
+  )
   glbload.load(
     'longmenzhen01.glb',
     function (loadedModel) {
@@ -126,11 +137,8 @@ function addPoint(s: THREE.Scene, { x, y, z }, radius: number, color: number, ur
   mesh.add(sprite)
 } // 在onMounted阶段进行初始化
 
+// 视频
 onMounted(() => {
-  initVideoSourc()
-})
-
-function initVideoSourc() {
   videojs(
     'my-video',
     {
@@ -144,10 +152,14 @@ function initVideoSourc() {
       this.play()
     }
   )
-}
+})
+// 视频弹窗
+const dialogVisible = ref(false)
+const video = ref(null)
 function diao() {
-  console.log('123')
+  dialogVisible.value = true
 }
+/* echarts */
 const pieOptions: EChartsOption = {
   tooltip: {
     trigger: 'item'
@@ -433,12 +445,16 @@ const water: any = {
       </div>
     </div>
     <!--  -->
-    <!--  -->
     <div class="position-card right-10 top-30">
       <div class="title-right text-right h-8 mb-2 leading-8 pr-2 font-bold">视频监控</div>
       <div class="bodys h-52 center-bg">
+        <Dialog v-model="dialogVisible" title="dialog">
+          <Video />
+          <template #footer>
+            <el-button @click="dialogVisible = false">关闭</el-button>
+          </template>
+        </Dialog>
         <div class="center videocenter h-full w-full flex flex-row" @click="diao">
-          <!-- <img class="h-full w-full" src="@/assets/imgs/jiankong.png" alt="" /> -->
           <video
             v-for="(x, y) in [
               'https://hls01open.ys7.com/openlive/4d4a5ff6f97f4e9cb299bb830140757e.m3u8',

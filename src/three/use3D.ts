@@ -120,7 +120,7 @@ export function use3D(element: Ref<HTMLCanvasElement>) {
     camera,
     renderer,
     controls,
-    spriteObj,
+    spriteObj, // 代表选中的 sprite
     glbload
   }
 }
