@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref, unref, nextTick, onMounted } from 'vue'
+import { Ref, ref, nextTick, onMounted } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
 import { Echart } from '@/components/Echart'
 import { EChartsOption } from 'echarts'
@@ -56,19 +56,17 @@ const key = ref(Math.random())
 nextTick(() => {
   key.value = Math.random()
 })
-const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
 
 onMounted(() => {
-  let scenes = unref(scene)
-
+  const { scene, camera, glbload } = use3D(canvas as Ref<HTMLCanvasElement>)
   glbload.load(
     'longmenzhen01.glb',
     function (loadedModel) {
-      scenes.add(loadedModel.scene)
+      scene.add(loadedModel.scene)
       // 默认视角
       camera.value.position.set(0, 10000, 0) // 相机位置
 
-      addPoint(scenes, { x: -2000, y: 32, z: 16 }, 1300, 0xf09393, './cube/alarm1.png')
+      addPoint(scene, { x: -2000, y: 32, z: 16 }, 1300, 0xf09393, './cube/alarm1.png')
 
       let qipao = new THREE.Sprite(
         new THREE.SpriteMaterial({
@@ -78,24 +76,24 @@ onMounted(() => {
       )
       qipao.scale.set(520, 400, 400)
       qipao.position.set(-1600, -100, -150)
-      scenes.add(qipao)
+      scene.add(qipao)
 
-      addPoint(scenes, { x: 2000, y: 132, z: 116 }, 500, 0xf09393, './cube/alarm1.png')
-      addPoint(scenes, { x: 2000, y: 132, z: 2000 }, 500, 0xffff00, './cube/alarm2.png')
+      addPoint(scene, { x: 2000, y: 132, z: 116 }, 500, 0xf09393, './cube/alarm1.png')
+      addPoint(scene, { x: 2000, y: 132, z: 2000 }, 500, 0xffff00, './cube/alarm2.png')
 
       const map = new THREE.TextureLoader().load('./cube/Camera.png')
       const material = new THREE.SpriteMaterial({ map: map })
       const sprite = new THREE.Sprite(material)
       sprite.scale.set(80, 80, 80)
       sprite.position.set(-1500, 32, 1200)
-      scenes.add(sprite)
+      scene.add(sprite)
 
       const s1 = sprite.clone()
       s1.position.set(-4000, 32, 1000)
-      scenes.add(s1)
+      scene.add(s1)
       const s2 = sprite.clone()
       s2.position.set(1000, 32, 1000)
-      scenes.add(s2)
+      scene.add(s2)
     },
     function (xhr) {
       console.log(parseInt(((xhr.loaded / xhr.total) * 100).toFixed(0)))
@@ -146,6 +144,9 @@ function initVideoSourc() {
       this.play()
     }
   )
+}
+function diao() {
+  console.log('123')
 }
 const pieOptions: EChartsOption = {
   tooltip: {
@@ -436,7 +437,7 @@ const water: any = {
     <div class="position-card right-10 top-30">
       <div class="title-right text-right h-8 mb-2 leading-8 pr-2 font-bold">视频监控</div>
       <div class="bodys h-52 center-bg">
-        <div class="center videocenter h-full w-full flex flex-row">
+        <div class="center videocenter h-full w-full flex flex-row" @click="diao">
           <!-- <img class="h-full w-full" src="@/assets/imgs/jiankong.png" alt="" /> -->
           <video
             v-for="(x, y) in [

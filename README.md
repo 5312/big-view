@@ -93,7 +93,7 @@ pnpm run build:pro
 3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
 4. 推送您的分支: `git push origin feat/xxxx`
 5. 提交 `pull request`
-
+6. 支持 master、develop、feature/*、 release/*、hotfix/* 分支
 ## Git 贡献提交规范
 
 - `feat` 新功能

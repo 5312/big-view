@@ -1,4 +1,4 @@
-import { Ref, ref, onMounted, onUnmounted } from 'vue'
+import { Ref, ref, onUnmounted } from 'vue'
 import { Vector3, Raycaster, Scene, Camera, WebGLRenderer } from 'three'
 
 import { ThreeInit } from '@/three/index'
@@ -9,27 +9,27 @@ export function use3D(element: Ref<HTMLCanvasElement>) {
   const object3d = ref<ThreeInit | null>(null) // 整体对象
   // Dom 元素
   const canvas = ref<HTMLCanvasElement | null>(null)
-  const scene = ref<Scene>(null)
+  let scene: Scene = null
   const camera = ref<Camera>(null)
   const renderer = ref<WebGLRenderer>(null)
   const controls = ref(null)
   const spriteObj = ref(null) // 精灵文字
 
-  onMounted(() => {
-    const picture = new ThreeInit(element.value)
-    picture.init()
+  // onMounted(() => {
+  const picture = new ThreeInit(element.value)
+  picture.init()
 
-    scene.value = picture.scene
-    camera.value = picture.camera
-    renderer.value = picture.renderer
-    controls.value = picture.controls
-    canvas.value = picture.canvas
-    object3d.value = picture
-    // 窗口变化
-    window.addEventListener('resize', picture.onWindowResize.bind(picture), false)
-    // 点击拾取
-    window.addEventListener('click', onMouseDbclick, false)
-  })
+  scene = picture.scene
+  camera.value = picture.camera
+  renderer.value = picture.renderer
+  controls.value = picture.controls
+  canvas.value = picture.canvas
+  object3d.value = picture
+  // 窗口变化
+  window.addEventListener('resize', picture.onWindowResize.bind(picture), false)
+  // 点击拾取
+  window.addEventListener('click', onMouseDbclick, false)
+  // })
 
   /**
    * @description 双击选中
@@ -54,7 +54,7 @@ export function use3D(element: Ref<HTMLCanvasElement>) {
       const raycaster = new Raycaster(camera.value.position, ray)
 
       raycaster.camera = camera.value
-      const intersects = raycaster.intersectObjects(scene.value.children)
+      const intersects = raycaster.intersectObjects(scene.children)
       /* 排除地图 */
       if (intersects.length != 0) {
         if (intersects[0].object.ID === 702158171) return
@@ -80,8 +80,8 @@ export function use3D(element: Ref<HTMLCanvasElement>) {
     window.removeEventListener('click', onMouseDbclick)
 
     try {
-      removeObj(scene.value)
-      scene.value.clear()
+      removeObj(scene)
+      scene.clear()
       renderer.value.renderLists.dispose()
       renderer.value.dispose()
       renderer.value.forceContextLoss()
